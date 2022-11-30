@@ -43,7 +43,7 @@ public class PedidoRepository {
             return null;
         }
     }
-
+    @Transactional
     public void deletarPedido(Pedido pedido) {
         entityManager.remove(pedido);
     }
