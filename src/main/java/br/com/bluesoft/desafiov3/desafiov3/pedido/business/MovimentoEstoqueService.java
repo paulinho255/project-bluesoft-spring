@@ -8,14 +8,17 @@ import br.com.bluesoft.desafiov3.desafiov3.pedido.model.MovimentoEstoque;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.Pedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.EstoqueVazioException;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.repository.MovimentoEstoqueRepository;
+import br.com.bluesoft.desafiov3.desafiov3.pedido.repository.PedidoRepository;
 
 @Service
 public class MovimentoEstoqueService {
 
     private final MovimentoEstoqueRepository movimentoEstoqueRepository;
+    private final PedidoRepository pedidoRepository;
 
-    public MovimentoEstoqueService(MovimentoEstoqueRepository movimentoEstoqueRepository) {
+    public MovimentoEstoqueService(MovimentoEstoqueRepository movimentoEstoqueRepository,PedidoRepository pedidoRepository) {
         this.movimentoEstoqueRepository = movimentoEstoqueRepository;
+        this.pedidoRepository = pedidoRepository;
     }
 
     @Transactional
@@ -34,6 +37,9 @@ public class MovimentoEstoqueService {
         //Aqui é somente uma simulação de algum problema.
         //Seja no banco, com uma comunicação via API, ou mensageria. Apenas para simular um problema ao movimentar o estoque.
         if (simularFalha) {
+        	if (movimentoEstoque != null) {
+        		this.pedidoRepository.deletarPedido(pedido);
+        	}
             simularFalha();
         }
         //
