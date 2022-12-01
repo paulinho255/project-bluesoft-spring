@@ -10,6 +10,7 @@ import br.com.bluesoft.desafiov3.desafiov3.pedido.model.FormaPagamento;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.ItemPedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.Pedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.EstoqueVazioException;
+import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.MaximoPedidoException;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.repository.PedidoRepository;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.web.form.ItemPedidoFormulario;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.web.form.PedidoFormulario;
@@ -28,8 +29,12 @@ public class PedidoService {
         this.movimentoEstoqueService = movimentoEstoqueService;
     }
 
-    public Pedido novoPedido(PedidoFormulario pedidoFormulario) throws EstoqueVazioException {
-        Pedido pedido = new Pedido();
+    public Pedido novoPedido(PedidoFormulario pedidoFormulario) throws EstoqueVazioException, MaximoPedidoException {
+        if(pedidoFormulario.getItens().size() > 50 ) {
+        	throw new MaximoPedidoException("Não é possivel criar mais de 50 itens para o estoque. Não cabe no caminhão.");
+        }
+        
+    	Pedido pedido = new Pedido();
         pedido.setFormaPagamento(pedidoFormulario.getFormaPagamento());
         pedido.setRetiradaNaLoja(pedidoFormulario.isRetiradaNaLoja());
 

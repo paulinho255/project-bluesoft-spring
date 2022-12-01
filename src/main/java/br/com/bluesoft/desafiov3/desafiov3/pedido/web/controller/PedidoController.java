@@ -14,6 +14,7 @@ import java.util.List;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.business.PedidoService;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.Pedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.EstoqueVazioException;
+import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.MaximoPedidoException;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.web.form.PedidoFormulario;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.web.view.PedidoView;
 
@@ -28,7 +29,7 @@ public class PedidoController {
     }
 
     @PostMapping("/novo-pedido")
-    public PedidoView novoPedido(@RequestBody PedidoFormulario pedidoFormulario) throws EstoqueVazioException {
+    public PedidoView novoPedido(@RequestBody PedidoFormulario pedidoFormulario) throws EstoqueVazioException, MaximoPedidoException {
         return new PedidoView(pedidoService.novoPedido(pedidoFormulario));
     }
 
