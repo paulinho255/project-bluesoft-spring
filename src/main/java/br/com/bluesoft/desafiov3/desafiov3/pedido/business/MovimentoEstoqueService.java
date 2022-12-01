@@ -1,5 +1,8 @@
 package br.com.bluesoft.desafiov3.desafiov3.pedido.business;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +27,8 @@ public class MovimentoEstoqueService {
     @Transactional
     public void movimentarEstoquePedido(final Pedido pedido, boolean simularFalha) throws EstoqueVazioException {
         double quantidadeMovimentada = 0;
-
-        for (ItemPedido item : pedido.getItens()) {
-            quantidadeMovimentada = quantidadeMovimentada + item.getQuantidade();
-        }
-
+        quantidadeMovimentada = pedido.getItens().stream().map(item -> item).count();
+        
         MovimentoEstoque movimentoEstoque = new MovimentoEstoque();
         movimentoEstoque.setPedidoId(pedido.getId());
         movimentoEstoque.setQuantidadeReservada(quantidadeMovimentada);
