@@ -27,8 +27,19 @@ public class ItemPedido {
     private String descricaoProduto;
 
     private Double quantidade;
-
-    public String getDescricaoProduto() {
+    
+    public ItemPedido() {
+	}
+    
+    public ItemPedido(Long id, Pedido pedido, String descricaoProduto, Double quantidade) {
+		super();
+		this.id = id;
+		this.pedido = pedido;
+		this.descricaoProduto = descricaoProduto;
+		this.quantidade = quantidade;
+	}
+    
+	public String getDescricaoProduto() {
         return descricaoProduto;
     }
 

@@ -1,5 +1,9 @@
 package br.com.bluesoft.desafiov3.desafiov3.pedido.web.controller;
 
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.bluesoft.desafiov3.desafiov3.pedido.business.PedidoService;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.Pedido;
@@ -29,13 +32,24 @@ public class PedidoController {
     }
 
     @PostMapping("/novo-pedido")
-    public PedidoView novoPedido(@RequestBody PedidoFormulario pedidoFormulario) throws EstoqueVazioException, MaximoPedidoException {
-        return new PedidoView(pedidoService.novoPedido(pedidoFormulario));
+    public ResponseEntity<PedidoView> novoPedido(@RequestBody PedidoFormulario pedidoFormulario) throws EstoqueVazioException, MaximoPedidoException {
+        Pedido pedido = pedidoService.novoPedido(pedidoFormulario);
+    	URI uri = ServletUriComponentsBuilder
+    				.fromCurrentRequest()
+    				.path("/{id}")
+    				.buildAndExpand(pedido.getId())
+    				.toUri(); 
+        
+    	return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/listar-todos-pedidos")
-    public List<Pedido> listarPedidos() {
-        return pedidoService.listarTodos();
+    public ResponseEntity<List<PedidoView>> listarPedidos() {
+    	List<PedidoView> pedidos = pedidoService.listarTodos()
+    								.stream()
+    								.map(item -> new PedidoView(item))
+    								.collect(Collectors.toList());  
+        return ResponseEntity.ok().body(pedidos);
     }
 
     @GetMapping("/obterPedidoPorId/{pedidoId}")
@@ -50,8 +64,9 @@ public class PedidoController {
     }
 
     @DeleteMapping(value = "/{pedidoId}")
-    public void deletarPedido(@PathVariable Long pedidoId) {
+    public ResponseEntity<Void> deletarPedido(@PathVariable Long pedidoId) {
         pedidoService.deletarPedido(pedidoId);
+        return ResponseEntity.noContent().build();
     }
 
 }

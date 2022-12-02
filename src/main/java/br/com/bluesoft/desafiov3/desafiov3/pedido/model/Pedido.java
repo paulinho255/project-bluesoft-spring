@@ -34,8 +34,20 @@ public class Pedido {
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "pedido_id")
     private List<ItemPedido> itens = new ArrayList<>();
+    
+    public Pedido() {
+		
+	}    
 
-    public Long getId() {
+    public Pedido(Long id, boolean retiradaNaLoja, FormaPagamento formaPagamento, List<ItemPedido> itens) {
+		super();
+		this.id = id;
+		this.retiradaNaLoja = retiradaNaLoja;
+		this.formaPagamento = formaPagamento;
+		this.itens = itens;
+	}
+
+	public Long getId() {
         return id;
     }
 

@@ -1,12 +1,8 @@
 package br.com.bluesoft.desafiov3.desafiov3.pedido.business;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.bluesoft.desafiov3.desafiov3.pedido.model.ItemPedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.MovimentoEstoque;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.Pedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.EstoqueVazioException;

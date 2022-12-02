@@ -10,8 +10,19 @@ public class PedidoFormulario {
     private boolean simularFalha;
     private FormaPagamento formaPagamento;
     private List<ItemPedidoFormulario> itens;
+    
+    public PedidoFormulario() {
+		
+	}
+    
+    public PedidoFormulario(PedidoFormulario pedido) {
+		super();
+		this.retiradaNaLoja = pedido.isRetiradaNaLoja();
+		this.formaPagamento = pedido.getFormaPagamento();
+		this.itens = pedido.getItens();
+	}
 
-    public boolean isRetiradaNaLoja() {
+	public boolean isRetiradaNaLoja() {
         return retiradaNaLoja;
     }
 
