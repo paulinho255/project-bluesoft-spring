@@ -2,6 +2,7 @@ package br.com.bluesoft.desafiov3.desafiov3.pedido.web.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.bluesoft.desafiov3.desafiov3.pedido.business.PedidoService;
+import br.com.bluesoft.desafiov3.desafiov3.pedido.model.FormaPagamento;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.Pedido;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.EstoqueVazioException;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.exception.MaximoPedidoException;
@@ -41,6 +43,13 @@ public class PedidoController {
     				.toUri(); 
         
     	return ResponseEntity.created(uri).build();
+    }
+    
+    @GetMapping("/listar-forma-pagamento")
+    public ResponseEntity<Map<FormaPagamento, Long>> listarFormaDePagamento(){
+    	Map<FormaPagamento, Long> map = pedidoService.listarQuantidadeDePedidosPorFormaDePagamento();
+    			
+    	return ResponseEntity.ok().body(map);
     }
 
     @GetMapping("/listar-todos-pedidos")

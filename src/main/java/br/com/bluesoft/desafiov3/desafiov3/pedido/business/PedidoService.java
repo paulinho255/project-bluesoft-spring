@@ -3,8 +3,11 @@ package br.com.bluesoft.desafiov3.desafiov3.pedido.business;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.FormaPagamento;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.ItemPedido;
@@ -63,8 +66,15 @@ public class PedidoService {
     }
 
     private Map<FormaPagamento, Long> agruparPedidoPorFormaDePagamento(List<Pedido> todosOsPedidos) {
-        //Falta implementar!
-        return null;
+        Map<FormaPagamento, Long> map = new LinkedHashMap<FormaPagamento, Long>();
+    	List<FormaPagamento> formaPagamento = new ArrayList<>();
+    	
+    	todosOsPedidos.forEach(obj -> formaPagamento.add(obj.getFormaPagamento()));
+    	    	
+    	formaPagamento.stream()
+    		.map(obj -> map.put(obj, (long) Collections.frequency(formaPagamento,obj)))
+    		.collect(Collectors.toList());    		
+        return map;
     }
 
     public Pedido buscarPedido(Long pedidoId) {
