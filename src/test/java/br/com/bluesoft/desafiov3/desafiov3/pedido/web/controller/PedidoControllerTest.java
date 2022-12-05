@@ -77,6 +77,14 @@ public class PedidoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(uri))
             .andExpect(MockMvcResultMatchers.status().is(Response.SC_OK));
     }
+    
+    @Test
+    public void agruparPedidoPorFormaDePagamento() throws Exception {
+    	URI uri = new URI("/pedidos/listar-forma-pagamento");
+    	
+    	mockMvc.perform(MockMvcRequestBuilders.get(uri))
+    	.andExpect(MockMvcResultMatchers.status().is(Response.SC_OK));
+    }
 
     @Test
     public void deletarPedido() throws Exception {
