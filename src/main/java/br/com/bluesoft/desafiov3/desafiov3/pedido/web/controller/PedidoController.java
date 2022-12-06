@@ -1,6 +1,5 @@
 package br.com.bluesoft.desafiov3.desafiov3.pedido.web.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.bluesoft.desafiov3.desafiov3.pedido.business.PedidoService;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.FormaPagamento;
@@ -34,15 +32,9 @@ public class PedidoController {
     }
 
     @PostMapping("/novo-pedido")
-    public ResponseEntity<PedidoView> novoPedido(@RequestBody PedidoFormulario pedidoFormulario) throws EstoqueVazioException, MaximoPedidoException {
+    public ResponseEntity<Pedido> novoPedido(@RequestBody PedidoFormulario pedidoFormulario) throws EstoqueVazioException, MaximoPedidoException {
         Pedido pedido = pedidoService.novoPedido(pedidoFormulario);
-    	URI uri = ServletUriComponentsBuilder
-    				.fromCurrentRequest()
-    				.path("/{id}")
-    				.buildAndExpand(pedido.getId())
-    				.toUri(); 
-        
-    	return ResponseEntity.created(uri).build();
+    	return ResponseEntity.ok().body(pedido);
     }
     
     @GetMapping("/listar-forma-pagamento")
@@ -73,8 +65,12 @@ public class PedidoController {
     }
 
     @DeleteMapping(value = "/{pedidoId}")
-    public ResponseEntity<Void> deletarPedido(@PathVariable Long pedidoId) {
-        pedidoService.deletarPedido(pedidoId);
+    public ResponseEntity<?> deletarPedido(@PathVariable Long pedidoId) {
+        Boolean pedidoDeletado = pedidoService.deletarPedido(pedidoId); 
+    	if (pedidoDeletado) {
+        	return ResponseEntity.ok("Pedido deletado com sucesso: " + pedidoId);
+        }
+        
         return ResponseEntity.noContent().build();
     }
 

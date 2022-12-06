@@ -1,13 +1,13 @@
 package br.com.bluesoft.desafiov3.desafiov3.pedido.business;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
 
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.FormaPagamento;
 import br.com.bluesoft.desafiov3.desafiov3.pedido.model.ItemPedido;
@@ -45,6 +45,7 @@ public class PedidoService {
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setDescricaoProduto(item.getDescricaoProduto());
             itemPedido.setQuantidade(item.getQuantidade());
+            itemPedido.setPedido(pedido);
             itens.add(itemPedido);
             pedido.getItens().add(itemPedido);
         }
@@ -81,8 +82,14 @@ public class PedidoService {
         return pedidoRepository.buscarPedido(pedidoId);
     }
 
-    public void deletarPedido(Long pedidoId) {
+    public Boolean deletarPedido(Long pedidoId) {
         final Pedido pedido = pedidoRepository.buscarPedido(pedidoId);
-        pedidoRepository.deletarPedido(pedido);
+        
+        if (pedido != null) {
+        	pedidoRepository.deletarPedido(pedido);
+        	return true;
+        }       
+        
+        return false;
     }
 }
